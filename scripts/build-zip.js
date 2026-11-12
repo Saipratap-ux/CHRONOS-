@@ -71,6 +71,8 @@ jobs:
 
       - name: Build Application
         run: npm run build
+        env:
+          BASE_PATH: /CHRONOS-/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

@@ -53,36 +53,48 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
-// Relative base './' ensures zero-config deployment to GitHub Pages (https://<user>.github.io/<repo>/)
-export default defineConfig({
-  base: './',
-  plugins: [
-    react(),
-    tailwindcss(),
-    VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon.svg'],
-      manifest: {
-        id: '/',
-        name: 'Chronos: Time-Travel Photo Booth',
-        short_name: 'TimeTravel',
-        description: 'Step into history with an AI-powered photo booth that transports your face into historical eras.',
-        theme_color: '#0f172a',
-        background_color: '#0f172a',
-        display: 'standalone',
-        start_url: './',
-        scope: './',
-        icons: [
-          { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
-          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
-          { src: 'pwa-maskable-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
-        ]
-      }
-    })
-  ],
-  resolve: {
-    alias: { '@': path.resolve(__dirname, '.') }
+export default defineConfig(({ command, mode }) => {
+  let basePath = '/';
+  if (command === 'build' || mode === 'production') {
+    if (process.env.BASE_PATH) {
+      basePath = process.env.BASE_PATH;
+    } else if (process.env.GITHUB_REPOSITORY) {
+      basePath = \`/\${process.env.GITHUB_REPOSITORY.split('/')[1]}/\`;
+    } else {
+      basePath = '/CHRONOS-/';
+    }
   }
+
+  return {
+    base: basePath,
+    plugins: [
+      react(),
+      tailwindcss(),
+      VitePWA({
+        registerType: 'autoUpdate',
+        includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon.svg'],
+        manifest: {
+          id: basePath,
+          name: 'Chronos: Time-Travel Photo Booth',
+          short_name: 'TimeTravel',
+          description: 'Step into history with an AI-powered photo booth that transports your face into historical eras.',
+          theme_color: '#0f172a',
+          background_color: '#0f172a',
+          display: 'standalone',
+          start_url: basePath,
+          scope: basePath,
+          icons: [
+            { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+            { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+            { src: 'pwa-maskable-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+          ]
+        }
+      })
+    ],
+    resolve: {
+      alias: { '@': path.resolve(__dirname, '.') }
+    }
+  };
 });`
   );
 

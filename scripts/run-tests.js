@@ -59,9 +59,11 @@ try {
   assert(fs.existsSync(path.join(publicDir, 'apple-touch-icon.png')), 'apple-touch-icon.png exists in public/');
 
   const viteConfig = fs.readFileSync(path.resolve('vite.config.ts'), 'utf8');
-  assert(viteConfig.includes("base: './'"), 'Vite configured with base: ./ for GitHub Pages');
+  assert(viteConfig.includes("base: basePath") || viteConfig.includes("basePath = '/CHRONOS-/'"), 'Vite configured with dynamic base supporting /CHRONOS-/ for GitHub Pages');
   assert(viteConfig.includes('VitePWA'), 'VitePWA plugin integrated in vite.config.ts');
   assert(viteConfig.includes("short_name: 'TimeTravel'"), 'PWA short_name <= 12 chars standard verified');
+  assert(fs.existsSync(path.join(publicDir, '.nojekyll')), '.nojekyll exists in public/ to disable Jekyll on GitHub Pages');
+  assert(fs.existsSync(path.resolve('.github/workflows/deploy.yml')), '.github/workflows/deploy.yml workflow file exists');
 } catch (e) {
   assert(false, 'Failed verifying PWA: ' + e.message);
 }
