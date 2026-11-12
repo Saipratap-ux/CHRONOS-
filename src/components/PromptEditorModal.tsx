@@ -167,6 +167,10 @@ export const PromptEditorModal: React.FC<Props> = ({
             </div>
           </div>
 
+          <p className="text-[10px] text-slate-400 font-mono">
+            * Gemini Nano Banana 2.1 uses your billing-enabled key from Settings &gt; Secrets. If using a free key, high-fidelity canvas composition is applied.
+          </p>
+
           {errorMsg && (
             <div className="p-3 rounded-xl bg-red-950/60 border border-red-500/40 text-xs text-red-200">
               {errorMsg}

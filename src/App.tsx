@@ -119,11 +119,16 @@ export default function App() {
 
       if (response.ok && data.ok && data.imageUrl) {
         finalResultUrl = data.imageUrl;
+        setStatusMessage(`Time jump synthesized with Gemini Nano Banana 2.1 in ${selectedEra.year}!`);
       } else {
-        // Fallback to high-fidelity client Canvas compositor (works 100% on static GitHub Pages)
-        console.info('Switching to local Canvas compositor fallback engine.');
+        // Seamlessly use high-fidelity client Canvas compositor
         finalResultUrl = await compositeHistoricalPortrait(capturedPhoto, selectedEra, 800, 1000);
-        modelUsed = 'Local Canvas Compositor';
+        modelUsed = 'Chronos Canvas Compositor';
+        if (data?.quotaExceeded) {
+          setStatusMessage(`Transformed with Canvas Compositor! (To use live Gemini Nano Banana 2.1, select a billing-enabled key in Settings > Secrets)`);
+        } else {
+          setStatusMessage(`Time jump complete! Molecular alignment stabilized in ${selectedEra.year}`);
+        }
       }
 
       setTransformedPhoto(finalResultUrl);
@@ -147,10 +152,9 @@ export default function App() {
         colors: [selectedEra.color.primary, '#fef08a', '#38bdf8'],
       });
 
-      setStatusMessage('Time jump complete! Molecular alignment stabilized in ' + selectedEra.year);
-      setTimeout(() => setStatusMessage(null), 5000);
+      setTimeout(() => setStatusMessage(null), 7000);
     } catch (err: any) {
-      console.warn('Network error during transform, executing local compositor:', err);
+      console.warn('Network issue during transform, executing local compositor:', err);
       const fallbackUrl = await compositeHistoricalPortrait(capturedPhoto, selectedEra, 800, 1000);
       setTransformedPhoto(fallbackUrl);
 
@@ -160,7 +164,7 @@ export default function App() {
         originalImage: capturedPhoto,
         transformedImage: fallbackUrl,
         eraId: selectedEra.id,
-        modelUsed: 'Local Canvas Compositor',
+        modelUsed: 'Chronos Canvas Compositor',
       };
       saveCaptureToVault(newCapture);
     } finally {
@@ -187,9 +191,13 @@ export default function App() {
       });
 
       const data = await response.json();
-      if (response.ok && data.ok && data.data) {
+      if (data && data.ok && data.data) {
         setCurrentAnalysis(data.data);
         setShowDossier(true);
+        if (data.notice) {
+          setStatusMessage(data.notice);
+          setTimeout(() => setStatusMessage(null), 5000);
+        }
       } else {
         // Fallback analysis simulation
         const fallbackAnalysis: TemporalAnalysis = {
@@ -216,7 +224,6 @@ export default function App() {
       setShowDossier(true);
     } finally {
       setIsAnalyzing(false);
-      setStatusMessage(null);
     }
   };
 
@@ -260,8 +267,26 @@ export default function App() {
           spread: 70,
           origin: { y: 0.6 },
         });
+      } else if (capturedPhoto) {
+        // Seamless fallback to high-fidelity canvas composition
+        const composed = await compositeHistoricalPortrait(capturedPhoto, selectedEra, 800, 1000);
+        setTransformedPhoto(composed);
+        const newCap: PhotoCapture = {
+          id: 'prompt-' + Date.now(),
+          timestamp: Date.now(),
+          originalImage: capturedPhoto,
+          transformedImage: composed,
+          eraId: selectedEra.id,
+          customPrompt: prompt,
+          modelUsed: 'Chronos Canvas Compositor',
+        };
+        saveCaptureToVault(newCap);
+
+        if (data?.quotaExceeded) {
+          setStatusMessage('Composed era portrait with Canvas Compositor. Select a billing-enabled key in Settings > Secrets to unlock live Gemini Nano Banana 2.1 synthesis.');
+        }
       } else {
-        throw new Error(data.error || 'Failed to generate custom image');
+        throw new Error(data?.error || 'Failed to generate custom image');
       }
     } catch (err: any) {
       console.warn('API prompt edit unavailable, using compositor styling:', err);
