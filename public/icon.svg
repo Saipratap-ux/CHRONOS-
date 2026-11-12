@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e1b4b" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde047" />
+      <stop offset="50%" stop-color="#eab308" />
+      <stop offset="100%" stop-color="#ca8a04" />
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#6366f1" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="108" fill="url(#bgGrad)" />
+  
+  <!-- Outer Cosmic Chronos Ring -->
+  <circle cx="256" cy="256" r="210" stroke="url(#goldGrad)" stroke-width="4" stroke-dasharray="8 12" fill="none" opacity="0.6" />
+  <circle cx="256" cy="256" r="195" stroke="url(#cyanGrad)" stroke-width="2" fill="none" opacity="0.4" />
+  
+  <!-- Hourglass / Vortex Silhouette -->
+  <path d="M156 120 L356 120 L280 256 L356 392 L156 392 L232 256 Z" fill="none" stroke="url(#goldGrad)" stroke-width="12" stroke-linejoin="round" />
+  
+  <!-- Camera Shutter Lens in Center -->
+  <circle cx="256" cy="256" r="54" fill="#0f172a" stroke="url(#cyanGrad)" stroke-width="8" filter="url(#glow)" />
+  <circle cx="256" cy="256" r="28" fill="url(#goldGrad)" />
+  <circle cx="266" cy="246" r="8" fill="#ffffff" opacity="0.8" />
+  
+  <!-- Time ticks -->
+  <line x1="256" y1="56" x2="256" y2="76" stroke="url(#goldGrad)" stroke-width="6" stroke-linecap="round" />
+  <line x1="256" y1="436" x2="256" y2="456" stroke="url(#goldGrad)" stroke-width="6" stroke-linecap="round" />
+  <line x1="56" y1="256" x2="76" y2="256" stroke="url(#goldGrad)" stroke-width="6" stroke-linecap="round" />
+  <line x1="436" y1="256" x2="456" y2="256" stroke="url(#goldGrad)" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Sparkles -->
+  <polygon points="256,150 260,165 275,165 262,175 266,190 256,180 246,190 250,175 237,165 252,165" fill="#fef08a" opacity="0.9" />
+  <polygon points="256,330 259,340 270,340 261,348 264,360 256,352 248,360 251,348 242,340 253,340" fill="#fef08a" opacity="0.9" />
+</svg>

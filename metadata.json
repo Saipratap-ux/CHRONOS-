@@ -1,0 +1,6 @@
+{
+  "name": "Chronos: Time-Travel Photo Booth",
+  "description": "Step into history with an AI-powered photo booth that transports your face into historical eras, featuring Gemini image editing & analysis, PWA installation, and export tools.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
